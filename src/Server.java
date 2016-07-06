@@ -25,7 +25,7 @@ public class Server {
 
             while (stay) {
 
-                System.out.println("Escuchando...");
+                System.out.println("Escuchando en puerto " + listener.getLocalPort() + " ...");
                 Socket socket = listener.accept();
                 System.out.println("Cliente Aceptado!\n");
 
