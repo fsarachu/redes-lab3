@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,61 +20,58 @@ public class Server {
         // Creo socket del servidor
         ServerSocket listener = new ServerSocket(Integer.parseInt(args[0]));
 
-        // Comienza a atender
         try {
+            // Espero a un cliente y establezco conexión
+            System.out.println("Servidor corriendo en puerto " + listener.getLocalPort() + " ...");
+            Socket socket = listener.accept();
 
-            boolean stay = true;
+            try {
+                // Obtengo streams de entrada y salida
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-            while (stay) {
+                // Entro a loop principal
+                boolean stay = true;
 
-                System.out.println("Escuchando en puerto " + listener.getLocalPort() + " ...");
-                Socket socket = listener.accept();
-                System.out.println("Cliente Aceptado!\n");
+                while (stay) {
+                    // Mando mensaje al cliente
+                    out.print("Ingrese un comando: ");
 
-                try {
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    out.println("Cjjj Cjjj, Check Check");
+                    // Obtener mensaje del cliente
+                    String input = in.readLine();
 
-                    String command = "bye";
-                    Options option = Options.valueOf(command.toUpperCase());
-
-                    switch (option) {
-                        case GET_TIME:
+                    // Respondo
+                    switch (input) {
+                        case "GET_TIME":
+                            out.println(input.toUpperCase());
                             break;
-                        case GET_DATE:
+                        case "GET_DATE":
+                            out.println(input.toUpperCase());
                             break;
-                        case GET_TIMESTAMP:
+                        case "GET_TIMESTAMP":
+                            out.println(input.toUpperCase());
                             break;
-                        case HELLO:
+                        case "HELLO":
+                            out.println(input.toUpperCase());
                             break;
-                        case GET_VERSION:
+                        case "GET_VERSION":
+                            out.println(input.toUpperCase());
                             break;
-                        case BYE:
-                            System.out.println("Bye bye...");
+                        case "BYE":
+                            out.println("Bye bye...");
                             stay = false;
                             break;
                         default:
-                            System.out.println("Opción desconocida.");
+                            out.println("Opción desconocida.");
                             break;
                     }
-
-                } finally {
-                    socket.close();
                 }
+            } finally {
+                socket.close();
             }
-
         } finally {
             listener.close();
         }
 
-    }
-
-    public enum Options {
-        GET_TIME,
-        GET_DATE,
-        GET_TIMESTAMP,
-        HELLO,
-        GET_VERSION,
-        BYE
     }
 }
