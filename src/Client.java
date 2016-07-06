@@ -1,37 +1,23 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.net.*;
+import java.io.*;
 
 public class Client {
-    public static void main(String[] args) throws IOException {
-
-        // Chequeo que haya pasado dos parámetros
-        if (args.length != 2) {
-            System.out.println("ERROR: pasar el host y puerto del servidor como argumentos. \n" +
-                    "Ejemplo: java Client localhost 1234");
-            System.exit(0);
-        }
-
-        System.out.println("Conectando a " + args[0] + ":" + args[1] + " ...");
-        Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
-
+    public static void main(String[] args) {
+        String serverName = args[0];
+        int port = Integer.parseInt(args[1]);
         try {
-            // Conexión lograda
-            System.out.println("Conexión establecida con " + socket.getRemoteSocketAddress() + "\n");
-
-            // Obtengo streams de entrada y salida
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-            while (true) {
-                System.out.println("> SERVIDOR: " + out.toString());
-                in.readLine();
-            }
-
-        } finally {
-            socket.close();
+            System.out.println("Connecting to " + serverName + " on port " + port);
+            Socket client = new Socket(serverName, port);
+            System.out.println("Just connected to " + client.getRemoteSocketAddress());
+            OutputStream outToServer = client.getOutputStream();
+            DataOutputStream out = new DataOutputStream(outToServer);
+            out.writeUTF("Hello from " + client.getLocalSocketAddress());
+            InputStream inFromServer = client.getInputStream();
+            DataInputStream in = new DataInputStream(inFromServer);
+            System.out.println("Server says " + in.readUTF());
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

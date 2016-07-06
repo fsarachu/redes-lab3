@@ -1,77 +1,42 @@
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Date;
+import java.net.*;
+import java.io.*;
 
+public class Server extends Thread {
+    private ServerSocket serverSocket;
 
-public class Server {
-    public static void main(String[] args) throws IOException {
+    public Server(int port) throws IOException {
+        serverSocket = new ServerSocket(port);
+        serverSocket.setSoTimeout(10000);
+    }
 
-        // Chequeo que haya pasado un parámetro
-        if (args.length != 1) {
-            System.out.println("ERROR: pasar el puerto como argumento. \n" +
-                    "Ejemplo: java Server 1234");
-            System.exit(0);
-        }
-
-        // Creo socket del servidor
-        ServerSocket listener = new ServerSocket(Integer.parseInt(args[0]));
-
-        try {
-            // Espero a un cliente y establezco conexión
-            System.out.println("Servidor corriendo en puerto " + listener.getLocalPort() + " ...");
-            Socket socket = listener.accept();
-
+    public void run() {
+        while (true) {
             try {
-                // Obtengo streams de entrada y salida
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-                // Entro a loop principal
-                boolean stay = true;
-
-                while (stay) {
-                    // Mando mensaje al cliente
-                    out.print("Ingrese un comando: ");
-
-                    // Obtener mensaje del cliente
-                    String input = in.readLine();
-
-                    // Respondo
-                    switch (input) {
-                        case "GET_TIME":
-                            out.println(input.toUpperCase());
-                            break;
-                        case "GET_DATE":
-                            out.println(input.toUpperCase());
-                            break;
-                        case "GET_TIMESTAMP":
-                            out.println(input.toUpperCase());
-                            break;
-                        case "HELLO":
-                            out.println(input.toUpperCase());
-                            break;
-                        case "GET_VERSION":
-                            out.println(input.toUpperCase());
-                            break;
-                        case "BYE":
-                            out.println("Bye bye...");
-                            stay = false;
-                            break;
-                        default:
-                            out.println("Opción desconocida.");
-                            break;
-                    }
-                }
-            } finally {
-                socket.close();
+                System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
+                Socket server = serverSocket.accept();
+                System.out.println("Just connected to " + server.getRemoteSocketAddress());
+                DataInputStream in = new DataInputStream(server.getInputStream());
+                System.out.println(in.readUTF());
+                DataOutputStream out = new DataOutputStream(server.getOutputStream());
+                out.writeUTF("Thank you for connecting to " + server.getLocalSocketAddress() + "\nGoodbye!");
+                server.close();
+            } catch (SocketTimeoutException s) {
+                System.out.println("Socket timed out!");
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+                break;
             }
-        } finally {
-            listener.close();
         }
+    }
 
+    public static void main(String[] args) {
+        int port = Integer.parseInt(args[0]);
+        try {
+            Thread t = new Server(port);
+            t.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
