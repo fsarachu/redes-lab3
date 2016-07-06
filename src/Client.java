@@ -14,6 +14,7 @@ public class Client {
             System.out.println("Conexion establecida con " + client.getRemoteSocketAddress());
 
             // Obtengo streams
+            BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
             OutputStream outToServer = client.getOutputStream();
             DataOutputStream out = new DataOutputStream(outToServer);
             InputStream inFromServer = client.getInputStream();
@@ -24,10 +25,11 @@ public class Client {
 
             while (stay) {
                 // Mando mensaje
-                String msgToServer = "Hola desde " + client.getLocalSocketAddress();
+                System.out.print("> ");
+                String msgToServer = cin.readLine();
                 out.writeUTF(msgToServer);
 
-                if (msgToServer == "BYE") {
+                if (msgToServer.equalsIgnoreCase("BYE")) {
                     // Si dije BYE me voy
                     stay = false;
                 } else {

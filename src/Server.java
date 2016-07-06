@@ -13,7 +13,7 @@ public class Server extends Thread {
         while (true) {
             try {
                 // Espero clientes y creo conexión con el que llegue
-                System.out.println("Escuchando en puerto " + serverSocket.getLocalPort() + "...");
+                System.out.println("\nEscuchando en puerto " + serverSocket.getLocalPort() + "...\n");
                 Socket server = serverSocket.accept();
                 System.out.println("Conexión establecida con " + server.getRemoteSocketAddress());
 
@@ -28,8 +28,9 @@ public class Server extends Thread {
 
                     // Leo mensaje
                     String msgFromClient = in.readUTF();
+                    System.out.println("> Cliente: " + msgFromClient);
 
-                    if (msgFromClient == "BYE") {
+                    if (msgFromClient.equalsIgnoreCase("BYE")) {
                         // Si dijo BYE me voy
                         stay = false;
                     } else {
@@ -40,6 +41,7 @@ public class Server extends Thread {
                 }
 
                 // Cierro conexión
+                System.out.println("Cerrando conexión con " + server.getRemoteSocketAddress());
                 server.close();
 
             } catch (IOException e) {
