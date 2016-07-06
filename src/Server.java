@@ -13,7 +13,7 @@ public class Server extends Thread {
     public void run() {
         while (true) {
             try {
-                // Espero clientes
+                // Espero clientes y creo conexión con el que llegue
                 System.out.println("Escuchando en puerto " + serverSocket.getLocalPort() + "...");
                 Socket server = serverSocket.accept();
                 System.out.println("Conexión establecida con " + server.getRemoteSocketAddress());
