@@ -6,8 +6,18 @@ import java.util.Date;
 
 
 public class Server {
-    public static void main(String[] args) {
-        System.out.println("This is the server!");
+    public static void main(String[] args) throws IOException {
+
+        // Chequeo que haya pasado un parámetro
+        if (args.length != 1) {
+            System.out.println("ERROR: pasar el puerto como argumento. \n" +
+                    "Ejemplo: java Server 1234");
+            System.exit(0);
+        }
+
+        // Creo socket del servidor
+        ServerSocket listener = new ServerSocket(Integer.parseInt(args[0]));
+
     }
 
     public enum Options {
