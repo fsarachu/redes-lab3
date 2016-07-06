@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
@@ -13,22 +14,24 @@ public class Client {
             System.exit(0);
         }
 
-        System.out.println("Connectando a " + args[0] + ":" + args[1] + " ...");
-        Socket client = new Socket(args[0], Integer.parseInt(args[1]));
+        System.out.println("Conectando a " + args[0] + ":" + args[1] + " ...");
+        Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
 
-        try
-        {
-            System.out.println("Conección establecida con " + client.getRemoteSocketAddress() + "\n");
-//            OutputStream outToServer = client.getOutputStream();
-//            DataOutputStream out = new DataOutputStream(outToServer);
-//            out.writeUTF("Hello from "
-//                    + client.getLocalSocketAddress());
-//            InputStream inFromServer = client.getInputStream();
-//            DataInputStream in =
-//                    new DataInputStream(inFromServer);
-//            System.out.println("Server says " + in.readUTF());
+        try {
+            // Conexión lograda
+            System.out.println("Conexión establecida con " + socket.getRemoteSocketAddress() + "\n");
+
+            // Obtengo streams de entrada y salida
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+            while (true) {
+                System.out.println("> SERVIDOR: " + out.toString());
+                in.readLine();
+            }
+
         } finally {
-            client.close();
+            socket.close();
         }
     }
 }
