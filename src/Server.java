@@ -18,6 +18,35 @@ public class Server {
         // Creo socket del servidor
         ServerSocket listener = new ServerSocket(Integer.parseInt(args[0]));
 
+        // Comienza a atender
+        try {
+            boolean stay = true;
+
+            while (stay) {
+                String buffer = "";
+                Options option = Options.valueOf(buffer.toUpperCase());
+
+                switch (option) {
+                    case GET_TIME:
+                        break;
+                    case GET_DATE:
+                        break;
+                    case GET_TIMESTAMP:
+                        break;
+                    case HELLO:
+                        break;
+                    case GET_VERSION:
+                        break;
+                    case BYE:
+                        stay = false;
+                        break;
+                }
+            }
+
+        } finally {
+            listener.close();
+        }
+
     }
 
     public enum Options {
