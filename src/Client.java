@@ -19,9 +19,23 @@ public class Client {
             InputStream inFromServer = client.getInputStream();
             DataInputStream in = new DataInputStream(inFromServer);
 
-            // Mando mensaje
-            out.writeUTF("Hola desde " + client.getLocalSocketAddress());
-            System.out.println("> Servidor: " + in.readUTF());
+            // Mantengo conexión hasta mandar "BYE"
+            boolean stay = true;
+
+            while (stay) {
+                // Mando mensaje
+                String msgToServer = "Hola desde " + client.getLocalSocketAddress();
+                out.writeUTF(msgToServer);
+
+                if (msgToServer == "BYE") {
+                    // Si dije BYE me voy
+                    stay = false;
+                } else {
+                    // Sino leo respuesta
+                    String msgFromServer = "> Servidor: " + in.readUTF();
+                    System.out.println(msgFromServer);
+                }
+            }
 
             // Cierro conexión
             client.close();

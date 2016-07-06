@@ -21,9 +21,23 @@ public class Server extends Thread {
                 DataInputStream in = new DataInputStream(server.getInputStream());
                 DataOutputStream out = new DataOutputStream(server.getOutputStream());
 
-                // Leo mensaje y respondo
-                System.out.println(in.readUTF());
-                out.writeUTF("Gracias por conectarse a " + server.getLocalSocketAddress() + "\nBye!");
+                // Mantengo conexión hasta recibir "BYE"
+                boolean stay = true;
+
+                while (stay) {
+
+                    // Leo mensaje
+                    String msgFromClient = in.readUTF();
+
+                    if (msgFromClient == "BYE") {
+                        // Si dijo BYE me voy
+                        stay = false;
+                    } else {
+                        // Sino Respondo
+                        String msgToClient = msgFromClient.toUpperCase();
+                        out.writeUTF(msgToClient);
+                    }
+                }
 
                 // Cierro conexión
                 server.close();
