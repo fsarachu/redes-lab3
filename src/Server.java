@@ -7,7 +7,6 @@ public class Server extends Thread {
 
     public Server(int port) throws IOException {
         serverSocket = new ServerSocket(port);
-        serverSocket.setSoTimeout(10000);
     }
 
     public void run() {
@@ -28,10 +27,6 @@ public class Server extends Thread {
 
                 // Cierro conexión
                 server.close();
-
-            } catch (SocketTimeoutException s) {
-                System.out.println("Socket timed out!");
-                break;
 
             } catch (IOException e) {
                 e.printStackTrace();

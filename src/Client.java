@@ -25,7 +25,7 @@ public class Client {
 
             // Cierro conexión
             client.close();
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
