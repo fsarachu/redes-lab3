@@ -9,4 +9,13 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("This is the server!");
     }
+
+    public enum Options {
+        GET_TIME,
+        GET_DATE,
+        GET_TIMESTAMP,
+        HELLO,
+        GET_VERSION,
+        BYE;
+    }
 }
