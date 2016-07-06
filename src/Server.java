@@ -20,27 +20,44 @@ public class Server {
 
         // Comienza a atender
         try {
+
             boolean stay = true;
 
             while (stay) {
-                String command = "bye";
-                Options option = Options.valueOf(command.toUpperCase());
 
-                switch (option) {
-                    case GET_TIME:
-                        break;
-                    case GET_DATE:
-                        break;
-                    case GET_TIMESTAMP:
-                        break;
-                    case HELLO:
-                        break;
-                    case GET_VERSION:
-                        break;
-                    case BYE:
-                        System.out.println("Bye bye...");
-                        stay = false;
-                        break;
+                System.out.println("Escuchando...");
+                Socket socket = listener.accept();
+                System.out.println("Cliente Aceptado!\n");
+
+                try {
+                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                    out.println("Cjjj Cjjj, Check Check");
+
+                    String command = "bye";
+                    Options option = Options.valueOf(command.toUpperCase());
+
+                    switch (option) {
+                        case GET_TIME:
+                            break;
+                        case GET_DATE:
+                            break;
+                        case GET_TIMESTAMP:
+                            break;
+                        case HELLO:
+                            break;
+                        case GET_VERSION:
+                            break;
+                        case BYE:
+                            System.out.println("Bye bye...");
+                            stay = false;
+                            break;
+                        default:
+                            System.out.println("Opción desconocida.");
+                            break;
+                    }
+
+                } finally {
+                    socket.close();
                 }
             }
 
