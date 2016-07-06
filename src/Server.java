@@ -23,8 +23,8 @@ public class Server {
             boolean stay = true;
 
             while (stay) {
-                String buffer = "";
-                Options option = Options.valueOf(buffer.toUpperCase());
+                String command = "bye";
+                Options option = Options.valueOf(command.toUpperCase());
 
                 switch (option) {
                     case GET_TIME:
@@ -38,6 +38,7 @@ public class Server {
                     case GET_VERSION:
                         break;
                     case BYE:
+                        System.out.println("Bye bye...");
                         stay = false;
                         break;
                 }
@@ -55,6 +56,6 @@ public class Server {
         GET_TIMESTAMP,
         HELLO,
         GET_VERSION,
-        BYE;
+        BYE
     }
 }
