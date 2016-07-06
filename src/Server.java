@@ -2,6 +2,7 @@ import java.net.*;
 import java.io.*;
 
 public class Server extends Thread {
+
     private ServerSocket serverSocket;
 
     public Server(int port) throws IOException {
@@ -12,29 +13,42 @@ public class Server extends Thread {
     public void run() {
         while (true) {
             try {
-                System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
+                // Espero clientes
+                System.out.println("Escuchando en puerto " + serverSocket.getLocalPort() + "...");
                 Socket server = serverSocket.accept();
-                System.out.println("Just connected to " + server.getRemoteSocketAddress());
+                System.out.println("Conexión establecida con " + server.getRemoteSocketAddress());
+
+                // Obtengo streams
                 DataInputStream in = new DataInputStream(server.getInputStream());
-                System.out.println(in.readUTF());
                 DataOutputStream out = new DataOutputStream(server.getOutputStream());
-                out.writeUTF("Thank you for connecting to " + server.getLocalSocketAddress() + "\nGoodbye!");
+
+                // Leo mensaje y respondo
+                System.out.println(in.readUTF());
+                out.writeUTF("Gracias por conectarse a " + server.getLocalSocketAddress() + "\nBye!");
+
+                // Cierro conexión
                 server.close();
+
             } catch (SocketTimeoutException s) {
                 System.out.println("Socket timed out!");
                 break;
+
             } catch (IOException e) {
                 e.printStackTrace();
                 break;
+
             }
         }
     }
 
     public static void main(String[] args) {
+
         int port = Integer.parseInt(args[0]);
+
         try {
             Thread t = new Server(port);
             t.start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
