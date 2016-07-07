@@ -14,12 +14,12 @@ public class Server extends Thread {
             try {
                 // Espero clientes y creo conexión con el que llegue
                 System.out.println("\nEscuchando en puerto " + serverSocket.getLocalPort() + "...\n");
-                Socket server = serverSocket.accept();
-                System.out.println("Conexión establecida con " + server.getRemoteSocketAddress());
+                Socket client = serverSocket.accept();
+                System.out.println("Conexión establecida con " + client.getRemoteSocketAddress());
 
                 // Obtengo streams
-                DataInputStream in = new DataInputStream(server.getInputStream());
-                DataOutputStream out = new DataOutputStream(server.getOutputStream());
+                DataInputStream in = new DataInputStream(client.getInputStream());
+                DataOutputStream out = new DataOutputStream(client.getOutputStream());
 
                 // Mantengo conexión hasta recibir "BYE"
                 boolean stay = true;
@@ -41,8 +41,8 @@ public class Server extends Thread {
                 }
 
                 // Cierro conexión
-                System.out.println("Cerrando conexión con " + server.getRemoteSocketAddress());
-                server.close();
+                System.out.println("Cerrando conexión con " + client.getRemoteSocketAddress());
+                client.close();
 
             } catch (IOException e) {
                 e.printStackTrace();
