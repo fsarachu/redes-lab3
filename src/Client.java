@@ -10,14 +10,14 @@ public class Client {
         try {
             // Creo conexión con servidor
             System.out.println("Conectando a " + serverName + " en puerto " + port);
-            Socket client = new Socket(serverName, port);
-            System.out.println("Conexion establecida con " + client.getRemoteSocketAddress());
+            Socket server = new Socket(serverName, port);
+            System.out.println("Conexion establecida con " + server.getRemoteSocketAddress());
 
             // Obtengo streams
             BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
-            OutputStream outToServer = client.getOutputStream();
+            OutputStream outToServer = server.getOutputStream();
             DataOutputStream out = new DataOutputStream(outToServer);
-            InputStream inFromServer = client.getInputStream();
+            InputStream inFromServer = server.getInputStream();
             DataInputStream in = new DataInputStream(inFromServer);
 
             // Mantengo conexión hasta mandar "BYE"
@@ -40,7 +40,7 @@ public class Client {
             }
 
             // Cierro conexión
-            client.close();
+            server.close();
 
         } catch (IOException e) {
             e.printStackTrace();
