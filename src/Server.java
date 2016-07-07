@@ -62,4 +62,13 @@ public class Server extends Thread {
             e.printStackTrace();
         }
     }
+
+    private enum Options {
+        GET_TIME,
+        GET_DATE,
+        GET_TIMESTAMP,
+        HELLO,
+        GET_VERSION,
+        BYE;
+    }
 }
