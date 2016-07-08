@@ -43,13 +43,13 @@ public class Server extends Thread {
 
                         switch (option) {
                             case GET_TIME:
-                                out.writeUTF((new SimpleDateFormat ("hh:mm:ss")).format(new Date( )));
+                                out.writeUTF((new SimpleDateFormat("hh:mm:ss")).format(new Date()));
                                 break;
                             case GET_DATE:
-                                out.writeUTF((new SimpleDateFormat ("yyyy.MM.dd")).format(new Date( )));
+                                out.writeUTF((new SimpleDateFormat("yyyy.MM.dd")).format(new Date()));
                                 break;
                             case GET_TIMESTAMP:
-                                out.writeUTF((new SimpleDateFormat ("yyyyMMddhhmmss")).format(new Date( )));
+                                out.writeUTF((new SimpleDateFormat("yyyyMMddhhmmss")).format(new Date()));
                                 break;
                             case HELLO:
                                 out.writeUTF("Hola " + splitedMsg[1]);
