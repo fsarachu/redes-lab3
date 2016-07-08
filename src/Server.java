@@ -39,14 +39,14 @@ public class Server extends Thread {
                         // Sino Respondo
                         String[] splitedMsg = msgFromClient.split(" ");
                         String command = splitedMsg[0];
-                        Options option = Options.valueOf(command);
+                        Options option = Options.valueOf(command.toUpperCase());
 
                         switch (option) {
                             case GET_TIME:
                                 out.writeUTF((new SimpleDateFormat("hh:mm:ss")).format(new Date()));
                                 break;
                             case GET_DATE:
-                                out.writeUTF((new SimpleDateFormat("yyyy.MM.dd")).format(new Date()));
+                                out.writeUTF((new SimpleDateFormat("yyyy-MM-dd")).format(new Date()));
                                 break;
                             case GET_TIMESTAMP:
                                 out.writeUTF((new SimpleDateFormat("yyyyMMddhhmmss")).format(new Date()));
