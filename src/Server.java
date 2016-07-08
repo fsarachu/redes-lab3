@@ -1,5 +1,7 @@
 import java.net.*;
 import java.io.*;
+import java.util.*;
+import java.text.*;
 
 public class Server extends Thread {
 
@@ -35,8 +37,33 @@ public class Server extends Thread {
                         stay = false;
                     } else {
                         // Sino Respondo
-                        String msgToClient = msgFromClient.toUpperCase();
-                        out.writeUTF(msgToClient);
+                        String[] splitedMsg = msgFromClient.split(" ");
+                        String command = splitedMsg[0];
+                        Options option = Options.valueOf(command);
+
+                        switch (option) {
+                            case GET_TIME:
+                                out.writeUTF((new SimpleDateFormat ("hh:mm:ss")).format(new Date( )));
+                                break;
+                            case GET_DATE:
+                                out.writeUTF((new SimpleDateFormat ("yyyy.MM.dd")).format(new Date( )));
+                                break;
+                            case GET_TIMESTAMP:
+                                out.writeUTF((new SimpleDateFormat ("yyyyMMddhhmmss")).format(new Date( )));
+                                break;
+                            case HELLO:
+                                out.writeUTF("Hola " + splitedMsg[1]);
+                                break;
+                            case GET_VERSION:
+                                out.writeUTF("0.0.1");
+                                break;
+                            case BYE:
+                                stay = false;
+                                break;
+                            default:
+                                out.writeUTF("Comando desconcido");
+                                break;
+                        }
                     }
                 }
 
@@ -69,6 +96,6 @@ public class Server extends Thread {
         GET_TIMESTAMP,
         HELLO,
         GET_VERSION,
-        BYE;
+        BYE
     }
 }
